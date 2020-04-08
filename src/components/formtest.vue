@@ -11,6 +11,9 @@
     <div>
       <table class="tb">
         <tr>
+          <th>
+            <input type="checkbox" name="selected" @click="checkAll" v-model="checked">
+          </th>
           <th>编号</th>
           <th>品牌名称</th>
           <th>创立时间</th>
@@ -18,6 +21,9 @@
           <th style="font-size:10px">感冒指数</th>
         </tr>
         <tr v-for="(item,index) in list" :key="index">
+          <td>
+            <input type="checkbox" name="selected" v-model="checkModel":value="item.id">
+          </td>
           <td>{{item.id}}</td>
           <td>{{item.name}}</td>
           <td>{{item.ctime | fmtTime('-')}}</td>
@@ -37,14 +43,6 @@
 
 <script>
   import axios from 'axios'
-    // Vue.filter('fmtTime',function (sourceTime,sep) {
-    //   sourceTime = new Date(sourceTime);
-    //   let y = sourceTime.getFullYear();
-    //   let m = sourceTime.getMonth();
-    //   let d = sourceTime.getDate();
-    //   // 处理完之后，必须要return一个字符串
-    //   return y + sep + m + sep + d;
-    // });
     export default { //这里需要将模块引出，可在其他地方使用
       props: ['fadata'],
       data(){
@@ -53,7 +51,16 @@
         newName:'',// 获取品牌名称框中的值
         list:[],
         searchVal:'',
-          // fadata:''
+        checkModel:[],
+        }
+      },
+      watch:{
+        checkModel(){
+          if(this.checkModel.length==this.list.length){
+            this.checked=true;
+          }else{
+            this.checked=false;
+          }
         }
       },
       mounted () {
@@ -61,6 +68,17 @@
         this.getList();
       },
       methods: {
+        checkAll(){
+          if(this.checked){
+            this.checkModel=[];
+          }else{
+            this.list.forEach((item)=>{
+              if(this.checkModel.indexOf(item.id)==-1){
+                this.checkModel.push(item.id)
+              }
+            })
+          }
+        },
         //获取数据
         getList(){
           axios.get('http://www.liulongbin.top:3005/api/getprodlist',
