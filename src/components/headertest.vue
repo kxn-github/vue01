@@ -5,7 +5,7 @@
     <el-col :xs="16" :sm="16" :md="12" :lg="12" :xl="2" style="width:55%">
       <div class="grid-content bg-purple">
         <img class="logo" src="../assets/ibm-logo.jpg">
-        <a href="#/userProfile" id="title" class="titletemp" >Benefits in the Cloud
+        <a href="/" id="title" class="titletemp" >Benefits in the Cloud
         </a>
       </div>
     </el-col>

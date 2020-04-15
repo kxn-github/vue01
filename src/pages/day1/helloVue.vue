@@ -1,9 +1,8 @@
 <template>
   <div id="vue" >
     <headertest></headertest>
-    <el-main>
+    <el-main style="line-height: 80px">
     <img class="backpic" src="~@/assets/background.png">
-
    <span> Hello Vue.js! {{ message }} </span>
       <!--父组件传值与子组件-->
       <formtest v-bind:fadata="ganmao" style="font-size:10px"></formtest>
@@ -12,12 +11,6 @@
     <input type="text" v-model="city">
     <button @click="get_weather">点击获取天气</button>
       <span style="font-size: 10px">  {{ ganmao }} </span>
-      <table >
-        <th>品牌</th>
-        <tr>
-          <td>test</td>
-        </tr>
-      </table>
 
   </span>
       </el-main>

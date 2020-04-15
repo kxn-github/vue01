@@ -1,42 +1,110 @@
 <template>
   <el-table :data="tableData" border style="width: 100%">
-    <el-table-column fixed prop="date" label="日期" width="150"> id
+    <el-table-column fixed prop="date" label="日期" width="150">
     </el-table-column>
-    <el-table-column prop="name" label="姓名" width="120">    name
+    <el-table-column prop="name" label="姓名" width="120">
     </el-table-column>
-    <el-table-column prop="province" label="省份" width="120"> author
+    <el-table-column prop="province" label="省份" width="120">
     </el-table-column>
-    <el-table-column prop="city" label="市区" width="120">   publish
+    <el-table-column prop="city" label="市区" width="120">
     </el-table-column>
-    <el-table-column prop="address" label="地址" width="300">  pages
+    <el-table-column prop="address" label="地址" width="300">
     </el-table-column>
-    <el-table-column prop="zip" label="邮编" width="120">  price
+    <el-table-column prop="zip" label="邮编" width="120">
     </el-table-column>
-    <el-table-column fixed="right" label="操作" width="100">  bookcase.name
+    <el-table-column fixed="right" label="操作" width="100">
       <template slot-scope="scope">
         <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
 
       </template>
     </el-table-column>
   </el-table>
+  <!--<div class="test">-->
+    <!--<div>-->
+      <!--<p>{{msg}}</p>-->
+      <!--<el-button @click="mockTest" >get模拟数据</el-button>-->
+    <!--</div>-->
+  <!--</div>-->
 </template>
 <script>
-
+  // import Mock from 'mockjs';
   export default {
+    // name:'test',
     methods: {
       handleClick(row) {
         console.log(row);
       }
+
     },
+    // mockTest () {
+    //   Mock.mock("http://mockjs/test",
+    //     {
+    //       'userName': '@cname'
+    //     }
+    //   );
+    //   this.$axios.get("http://mockjs/test")
+    //     .then(res=>{
+    //       console.log(res)
+    //     })
+    //     .catch(err=>{
+    //       console.log(err)
+    //     })
+    // },
     data() {
       return {
         tableData: [
           {date: '2016-05-03',name: '王小虎',province: '上海',city: '普陀区',address: '上海市普陀区金沙江路 1518 弄',zip: 200333},
-          {date: '2016-05-03',name: '王小虎',province: '上海',city: '普陀区',address: '上海市普陀区金沙江路 1518 弄',zip: 200333},
-          {date: '2016-05-03',name: '王小虎',province: '上海',city: '普陀区',address: '上海市普陀区金沙江路 1518 弄',zip: 200333},
-          {date: '2016-05-03',name: '王小虎',province: '上海',city: '普陀区',address: '上海市普陀区金沙江路 1518 弄',zip: 200333}
-        ]
+          {date: '2016-05-04',name: '王小虎',province: '上海',city: '普陀区',address: '上海市普陀区金沙江路 1518 弄',zip: 200333},
+          {date: '2016-05-05',name: '王小虎',province: '上海',city: '普陀区',address: '上海市普陀区金沙江路 1518 弄',zip: 200333},
+          {date: '2016-05-06',name: '王小虎',province: '上海',city: '普陀区',address: '上海市普陀区金沙江路 1518 弄',zip: 200333}
+        ],
+        // msg:'mockjs模拟前后台交互'
       }
     }
   }
 </script>
+
+<!--<template>-->
+  <!--<div class="test">-->
+    <!--<div>-->
+      <!--<p>{{msg}}</p>-->
+      <!--<button @click="mockTest" >get模拟数据</button>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</template>-->
+
+<!--<script>-->
+  <!--import Mock from 'mockjs';-->
+  <!--export default {-->
+    <!--name: 'test',-->
+    <!--data () {-->
+      <!--return {-->
+        <!--msg: 'mockjs模拟前后台交互'-->
+      <!--}-->
+    <!--},-->
+    <!--methods: {-->
+      <!--mockTest () {-->
+        <!--Mock.mock("http://mockjs/test",-->
+          <!--{-->
+            <!--'userName': '@cname'-->
+          <!--}-->
+        <!--);-->
+        <!--this.$axios.get("http://mockjs/test")-->
+          <!--.then(res=>{-->
+            <!--console.log(res)-->
+          <!--})-->
+          <!--.catch(err=>{-->
+            <!--console.log(err)-->
+          <!--})-->
+      <!--}-->
+    <!--}-->
+
+
+  <!--}-->
+<!--</script>-->
+
+<!--&lt;!&ndash; Add "scoped" attribute to limit CSS to this component only &ndash;&gt;-->
+<!--<style scoped>-->
+
+<!--</style>-->
+

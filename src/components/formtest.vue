@@ -22,7 +22,7 @@
         </tr>
         <tr v-for="(item,index) in list" :key="index">
           <td>
-            <input type="checkbox" name="selected" v-model="checkModel":value="item.id">
+            <input type="checkbox"  v-model="checkModel":value="item.id">
           </td>
           <td>{{item.id}}</td>
           <td>{{item.name}}</td>
@@ -37,6 +37,7 @@
         </tr>
         <!-- 动态生成内容tr -->
       </table>
+      <button @click="delDataall()">批量删除</button>
     </div>
   </div>
 </template>
@@ -52,6 +53,7 @@
         list:[],
         searchVal:'',
         checkModel:[],
+        str:'',
         }
       },
       watch:{
@@ -78,6 +80,34 @@
               }
             })
           }
+        },
+        delDataall() {
+          this.list = this.list.filter(item => this.checkModel.indexOf(item.id) === 0);
+          let checkArr = this.list;
+          //let data =[];
+          //let str = data.join(',');
+          //let str = JSON.stringify(this.data)
+          let str ='';
+          checkArr.forEach(function(item)
+            {
+              str +=item.id + ',';
+            }
+          );
+          str = str.substr(0,str.length-1);
+          // this.checkModel = [];
+          axios.get(`http://www.liulongbin.top:3005/api/delproduct/${str}`)
+            .then(res => {
+              if (res.data.status === 0) {
+                alert('删除成功');
+                // 删除成功之后，重新获取列表数据
+                this.getList();
+              }
+            })
+            .catch(err => {
+              // console.log(data);
+              // console.log(str);
+              console.error(err);
+            })
         },
         //获取数据
         getList(){
