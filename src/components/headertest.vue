@@ -1,17 +1,16 @@
 <template>
   <!--顶部bar-->
-  <el-header style="">
-  <el-row :gutter="10" >
-    <el-col :xs="16" :sm="16" :md="12" :lg="12" :xl="2" style="width:55%">
-      <div class="grid-content bg-purple">
-        <img class="logo" src="../assets/ibm-logo.jpg">
-        <a href="/" id="title" class="titletemp" >Benefits in the Cloud
-        </a>
-      </div>
-    </el-col>
-    <el-col :xs="4" :sm="4" :md="6" :lg="6" :xl="11"><div class="grid-content bg-purple-light"></div></el-col>
-    <el-col :xs="4" :sm="4" :md="6" :lg="6" :xl="11"><div class="grid-content bg-purple"></div></el-col>
-  </el-row>
+  <el-header >
+    <el-row>
+      <el-col :span="24">
+        <div class="grid-content bg-purple-dark grid-content bg-purple leftside">
+          <img class="logo" src="../assets/ibm-logo.jpg">
+          <a href="/" id="title" class="titletemp" >Benefits in the Cloud </a>
+        </div>
+     </el-col>
+    </el-row>
+
+
   </el-header>
 
 
@@ -33,8 +32,10 @@
   .titletemp{
     color: #143c6a;
     font-size: 56px;
-    margin-right: 75px;
     text-decoration: none
+  }
+  .leftside{
+    padding-right: 600px;
   }
   .el-col {
     border-radius: 4px;

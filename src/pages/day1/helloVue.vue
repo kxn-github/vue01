@@ -8,8 +8,8 @@
       <formtest v-bind:fadata="ganmao" style="font-size:10px"></formtest>
     <!--<img class="logo" src="../assets/background.png">-->
     <span >
-    <input type="text" v-model="city">
-    <button @click="get_weather">点击获取天气</button>
+    <el-input placeholder="请输入内容" v-model="city" style="width:15%;" ></el-input>
+    <el-button @click="get_weather">点击获取天气</el-button>
       <span style="font-size: 10px">  {{ ganmao }} </span>
 
   </span>

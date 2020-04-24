@@ -37,7 +37,26 @@
         </tr>
         <!-- 动态生成内容tr -->
       </table>
-      <button @click="delDataall()">批量删除</button>
+
+      <!--<el-table-->
+        <!--:data="list"-->
+        <!--style="width: 100%">-->
+        <!--<el-table-column-->
+          <!--prop="date"-->
+          <!--label="日期"-->
+          <!--width="180">-->
+        <!--</el-table-column>-->
+        <!--<el-table-column-->
+          <!--prop="name"-->
+          <!--label="姓名"-->
+          <!--width="180">-->
+        <!--</el-table-column>-->
+        <!--<el-table-column-->
+          <!--prop="address"-->
+          <!--label="地址">-->
+        <!--</el-table-column>-->
+      <!--</el-table>-->
+      <button @click="delDataall()">批量选择</button>
     </div>
   </div>
 </template>
@@ -126,23 +145,32 @@
         //删除数据
         delData(id){
           axios.get(`http://www.liulongbin.top:3005/api/delproduct/${id}`)
-            .then(res => {
-              if (res.data.status === 0) {
-                alert('删除成功');
-                // 删除成功之后，重新获取列表数据
-                this.getList();
-              }
-            })
-            .catch(err => {
-              console.error(err);
-            })
+          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          })
+         .then(() => {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+           this.getList();
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
         },
         //添加数据
         addData(){
           axios.post('http://www.liulongbin.top:3005/api/addproduct',{name:this.newName})
             .then(res => {
               if (res.data.status === 0) {
-                alert('添加成功');
+                this.$alert('添加成功', {
+                  confirmButtonText: '确定',
+                });
                 // 添加成功之后，重新获取列表数据
                 this.getList();
                 this.newName = '';

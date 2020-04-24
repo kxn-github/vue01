@@ -1,110 +1,282 @@
 <template>
-  <el-table :data="tableData" border style="width: 100%">
-    <el-table-column fixed prop="date" label="日期" width="150">
-    </el-table-column>
-    <el-table-column prop="name" label="姓名" width="120">
-    </el-table-column>
-    <el-table-column prop="province" label="省份" width="120">
-    </el-table-column>
-    <el-table-column prop="city" label="市区" width="120">
-    </el-table-column>
-    <el-table-column prop="address" label="地址" width="300">
-    </el-table-column>
-    <el-table-column prop="zip" label="邮编" width="120">
-    </el-table-column>
-    <el-table-column fixed="right" label="操作" width="100">
-      <template slot-scope="scope">
-        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+  <el-container>
+    <el-header style="height: 80px">
+      <headertest></headertest>
+    </el-header>
 
-      </template>
-    </el-table-column>
-  </el-table>
-  <!--<div class="test">-->
-    <!--<div>-->
-      <!--<p>{{msg}}</p>-->
-      <!--<el-button @click="mockTest" >get模拟数据</el-button>-->
-    <!--</div>-->
-  <!--</div>-->
+    <el-main>
+      <img class="backpic" src="~@/assets/background.png">
+      <el-row>
+        <el-col :span="8"><div class="grid-content"></div></el-col>
+        <el-col :span="8">
+          品牌名称：<el-input
+          placeholder="请输入内容"
+          v-model="newName"
+          clearable>
+        </el-input>
+        </el-col>
+        <el-col :span="8" class="addbutton">
+            <el-button type="primary" @click="addData">添加</el-button>
+        </el-col>
+
+      </el-row>
+
+      <el-table
+      ref="multipleTable"
+      :data="list"
+      tooltip-effect="dark"
+      style="width: 100%"
+      @selection-change="handleSelectionChange">
+      <el-table-column
+        type="selection"
+        width="55">
+      </el-table-column>
+      <el-table-column
+        prop="id"
+        label="编号"
+        width="120">
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="品牌名称"
+        width="120">
+      </el-table-column>
+      <el-table-column
+        prop="ctime"
+        label="创立时间"
+        show-overflow-tooltip>
+      </el-table-column>
+        <el-table-column
+          prop=""
+          label="测试表格"
+          show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="操作"
+          width="120">
+          <template slot-scope="scope">
+            <el-button
+              @click.native="delData(id)"
+              type="text"
+              size="small">
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
+    </el-table>
+    <div style="margin-top: 20px;width:60px">
+      <!--<el-button @click="toggleSelection([tableData[1], tableData[2]])">切换第二、第三行的选中状态</el-button>-->
+      <el-button type="warning" @click="toggleSelection()">取消选择</el-button>
+    </div>
+
+      <div >
+        <div class="inputsize">
+    <el-input placeholder="请输入内容" v-model="city" style="width:15%;" ></el-input>
+    <el-button type="primary" @click="get_weather">获取天气</el-button>
+      </div>
+      <!--<span style="font-size: 10px">  {{ganmao }} </span>-->
+        <div class="inputsize">
+        <el-input
+          type="textarea"
+          :rows="2"
+          placeholder="请输入内容"
+          v-model="ganmao">
+</el-input>
+          </div>
+  </div>
+    </el-main>
+  </el-container>
 </template>
 <script>
-  // import Mock from 'mockjs';
+  import headertest from '@/components/headertest.vue'
+  import axios from 'axios'
   export default {
-    // name:'test',
-    methods: {
-      handleClick(row) {
-        console.log(row);
-      }
-
+    components:{
+      headertest,
     },
-    // mockTest () {
-    //   Mock.mock("http://mockjs/test",
-    //     {
-    //       'userName': '@cname'
-    //     }
-    //   );
-    //   this.$axios.get("http://mockjs/test")
-    //     .then(res=>{
-    //       console.log(res)
-    //     })
-    //     .catch(err=>{
-    //       console.log(err)
-    //     })
-    // },
+    props: ['fadata'],
     data() {
       return {
-        tableData: [
-          {date: '2016-05-03',name: '王小虎',province: '上海',city: '普陀区',address: '上海市普陀区金沙江路 1518 弄',zip: 200333},
-          {date: '2016-05-04',name: '王小虎',province: '上海',city: '普陀区',address: '上海市普陀区金沙江路 1518 弄',zip: 200333},
-          {date: '2016-05-05',name: '王小虎',province: '上海',city: '普陀区',address: '上海市普陀区金沙江路 1518 弄',zip: 200333},
-          {date: '2016-05-06',name: '王小虎',province: '上海',city: '普陀区',address: '上海市普陀区金沙江路 1518 弄',zip: 200333}
-        ],
-        // msg:'mockjs模拟前后台交互'
+        city:"",
+        ganmao:"",
+        newId:'',// 获取编号框中的值
+        newName:'',// 获取品牌名称框中的值
+        list:[],
+        searchVal:'',
+        checkModel:[],
+        str:'',
+        multipleSelection: [],
+        id:''
+      }
+    },
+    watch:{
+      checkModel(){
+        if(this.checkModel.length==this.list.length){
+          this.checked=true;
+        }else{
+          this.checked=false;
+        }
+      }
+    },
+    mounted () {
+      // 页面一加载完成就执行getList方法
+      this.getList();
+    },
+
+    methods: {
+      toggleSelection(rows) {
+        if (rows) {
+          rows.forEach(row => {
+            this.$refs.multipleTable.toggleRowSelection(row);
+          });
+        } else {
+          this.$refs.multipleTable.clearSelection();
+        }
+      },
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+      },
+  //get weather
+      get_weather(){
+        this.$axios.get("http://wthrcdn.etouch.cn/weather_mini?city="+this.city)
+          .then(response=>{
+            this.ganmao=response.data.data.ganmao;
+            // console.log(vm instanceof Array);
+            console.log(response);
+            console.log(response.data);
+            console.log(response.data.data);
+            console.log(response.data.data.ganmao);
+
+          }).catch(error=>{
+          console.log(error.response)
+        });
+      },
+      //获取数据
+      getList(){
+        axios.get('http://www.liulongbin.top:3005/api/getprodlist',
+          {params:{searchvalue:this.searchVal}})
+          .then(res => {
+            if (res.data.status === 0) {
+              this.list = res.data.message;
+            }
+          })
+          .catch(err => {
+            console.error('获取数据失败' + err);
+          })
+        this.searchVal = '';
+      },
+      //删除数据
+      delData(id){
+        axios.get(`http://www.liulongbin.top:3005/api/delproduct/${id}`)
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(() => {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+            this.getList();
+          }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
+      //添加数据
+      addData(){
+        axios.post('http://www.liulongbin.top:3005/api/addproduct',{name:this.newName})
+          .then(res => {
+            if (res.data.status === 0) {
+              this.$alert('添加成功', {
+                confirmButtonText: '确定',
+              });
+              // 添加成功之后，重新获取列表数据
+              this.getList();
+              this.newName = '';
+            }
+          })
+          .catch(err => {
+            console.error(err);
+          })
       }
     }
   }
 </script>
 
-<!--<template>-->
-  <!--<div class="test">-->
-    <!--<div>-->
-      <!--<p>{{msg}}</p>-->
-      <!--<button @click="mockTest" >get模拟数据</button>-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</template>-->
+<style scoped>
+  .el-header, .el-footer {
+    /*background-color: #B3C0D1;*/
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+  }
 
-<!--<script>-->
-  <!--import Mock from 'mockjs';-->
-  <!--export default {-->
-    <!--name: 'test',-->
-    <!--data () {-->
-      <!--return {-->
-        <!--msg: 'mockjs模拟前后台交互'-->
-      <!--}-->
-    <!--},-->
-    <!--methods: {-->
-      <!--mockTest () {-->
-        <!--Mock.mock("http://mockjs/test",-->
-          <!--{-->
-            <!--'userName': '@cname'-->
-          <!--}-->
-        <!--);-->
-        <!--this.$axios.get("http://mockjs/test")-->
-          <!--.then(res=>{-->
-            <!--console.log(res)-->
-          <!--})-->
-          <!--.catch(err=>{-->
-            <!--console.log(err)-->
-          <!--})-->
-      <!--}-->
-    <!--}-->
+  .el-aside {
+    background-color: #D3DCE6;
+    color: #333;
+    text-align: center;
+    line-height: 200px;
+  }
 
+  .el-main {
+    background-color: #E9EEF3;
+    color: #333;
+    text-align: center;
+    line-height: 20px;
+  }
 
-  <!--}-->
-<!--</script>-->
+  body > .el-container {
+    margin-bottom: 40px;
+  }
 
-<!--&lt;!&ndash; Add "scoped" attribute to limit CSS to this component only &ndash;&gt;-->
-<!--<style scoped>-->
+  .el-container:nth-child(5) .el-aside,
+  .el-container:nth-child(6) .el-aside {
+    line-height: 260px;
+  }
 
-<!--</style>-->
+  .el-container:nth-child(7) .el-aside {
+    line-height: 320px;
+  }
 
+  .el-row {
+    margin-bottom: 20px;
+  /*&:last-child {*/
+     /*margin-bottom: 0;*/
+   /*}*/
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }
+  .bg-purple {
+    background: #d3dce6;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+  }
+  .row-bg {
+    padding: 10px 0;
+    background-color: #f9fafc;
+  }
+  .inputsize{
+    width:50%;
+    text-align:center;
+    margin:0 auto
+  }
+  .addbutton{
+    margin-top: 20px;
+    /*padding-right: 40px;*/
+    width:10%;
+  }
+</style>
