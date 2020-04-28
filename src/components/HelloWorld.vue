@@ -8,7 +8,7 @@
     <!--<h1>-->
       <!--<router-link to="/pages/testpage">跳转至testpage</router-link>-->
     <!--</h1>-->
-    <el-button  @click.native="jump">默认按钮测试</el-button>
+    <el-button  @click.native="jump">ElementUI使用</el-button>
     <h2>Essential Links</h2>
     <ul>
       <li>
