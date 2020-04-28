@@ -73,6 +73,7 @@
         searchVal:'',
         checkModel:[],
         str:'',
+        checked:'',
         }
       },
       watch:{

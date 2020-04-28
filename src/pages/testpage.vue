@@ -23,7 +23,7 @@
 
       <el-table
       ref="multipleTable"
-      :data="list"
+      :data="list.slice((currpage - 1) * pagesize, currpage * pagesize)"
       tooltip-effect="dark"
       style="width: 100%"
       @selection-change="handleSelectionChange">
@@ -57,7 +57,7 @@
           width="120">
           <template slot-scope="scope">
             <el-button
-              @click.native="delData(id)"
+              @click.native="delData(list[scope.$index].id)"
               type="text"
               size="small">
               删除
@@ -65,8 +65,17 @@
           </template>
         </el-table-column>
     </el-table>
+      <div class="block">
+        <el-pagination
+          layout="prev, pager, next, sizes, total, jumper"
+          :total="50"
+          :page-sizes="[5, 10, 15, 20]"
+          :page-size="pagesize"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange">
+        </el-pagination>
+      </div>
     <div style="margin-top: 20px;width:60px">
-      <!--<el-button @click="toggleSelection([tableData[1], tableData[2]])">切换第二、第三行的选中状态</el-button>-->
       <el-button type="warning" @click="toggleSelection()">取消选择</el-button>
     </div>
 
@@ -107,7 +116,9 @@
         checkModel:[],
         str:'',
         multipleSelection: [],
-        id:''
+        id:"",
+        pagesize: 10,
+        currpage: 1
       }
     },
     watch:{
@@ -125,18 +136,7 @@
     },
 
     methods: {
-      toggleSelection(rows) {
-        if (rows) {
-          rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row);
-          });
-        } else {
-          this.$refs.multipleTable.clearSelection();
-        }
-      },
-      handleSelectionChange(val) {
-        this.multipleSelection = val;
-      },
+
   //get weather
       get_weather(){
         this.$axios.get("http://wthrcdn.etouch.cn/weather_mini?city="+this.city)
@@ -166,8 +166,22 @@
           })
         this.searchVal = '';
       },
+      handleCurrentChange(cpage) {
+        this.currpage = cpage;
+      },
+      handleSizeChange(psize) {
+        this.pagesize = psize;
+      },
+      handleSelectionChange(val) {
+        console.log(val)
+      },
+    // mounted() {
+    //   this.getlist()
+    // },
       //删除数据
       delData(id){
+        //let id = row[index].id;
+        // row.splice(index, 1);
         axios.get(`http://www.liulongbin.top:3005/api/delproduct/${id}`)
         this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
           confirmButtonText: '确定',
