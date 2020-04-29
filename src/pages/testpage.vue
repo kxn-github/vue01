@@ -165,10 +165,8 @@
       // 页面一加载完成就执行getList方法
       this.getList();
     },
-
     methods: {
       searchfun(search){
-        alert('111');
       //this.list.filter(data => !this.search || data.name.toLowerCase().includes(this.search.toLowerCase()))
         this.list = this.list.filter(function(x){
           return x.name.toLowerCase().includes(search.toLowerCase());
@@ -219,10 +217,6 @@
       },
       handleSelectionChange(val) {
         console.log(val)
-      },
-//search
-      searchform(){
-        this.getList();
       },
       //删除数据
       delData(id){
