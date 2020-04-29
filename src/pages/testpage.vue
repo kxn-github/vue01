@@ -18,9 +18,15 @@
         <el-col :span="8" class="addbutton">
             <el-button type="primary" @click="addData">添加</el-button>
         </el-col>
-
+        <el-col :span="3" class="searchbutton">
+          <el-input
+            placeholder="查询"
+            prefix-icon="el-icon-search"
+            @change="searchform()"
+            >
+          </el-input>
+        </el-col>
       </el-row>
-
       <el-table
       ref="multipleTable"
       :data="list.slice((currpage - 1) * pagesize, currpage * pagesize)"
@@ -36,11 +42,12 @@
         label="编号"
         width="120">
       </el-table-column>
-      <el-table-column
-        prop="name"
-        label="品牌名称"
-        width="120">
-      </el-table-column>
+        <el-table-column label="品牌名称">
+          <template slot-scope="scope">
+            <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
+            <span v-show="!scope.row.show">{{scope.row.name}}</span>
+          </template>
+        </el-table-column>
       <el-table-column
         prop="ctime"
         label="创立时间"
@@ -54,8 +61,10 @@
         <el-table-column
           fixed="right"
           label="操作"
-          width="120">
+          width="220">
           <template slot-scope="scope">
+            <el-button size="mini" @click="scope.row.show =true">编辑</el-button>
+            <el-button size="mini" @click="scope.row.show =false">保存</el-button>
             <el-button
               @click.native="delData(list[scope.$index].id)"
               type="text"
@@ -68,7 +77,7 @@
       <div class="block">
         <el-pagination
           layout="prev, pager, next, sizes, total, jumper"
-          :total="50"
+          :total="list.length"
           :page-sizes="[5, 10, 15, 20]"
           :page-size="pagesize"
           @current-change="handleCurrentChange"
@@ -91,7 +100,7 @@
           :rows="2"
           placeholder="请输入内容"
           v-model="ganmao">
-</el-input>
+        </el-input>
           </div>
   </div>
     </el-main>
@@ -118,7 +127,7 @@
         multipleSelection: [],
         id:"",
         pagesize: 10,
-        currpage: 1
+        currpage: 1,
       }
     },
     watch:{
@@ -130,36 +139,62 @@
         }
       }
     },
+    //表名列表中搜索
+    // computed: {
+//       List() {
+//         var search = this.name.toString().toLowerCase(); //将用户输入的值变字符串并小写
+//         let list = res.data.message;
+//         if (search) {
+//           return this.list.filter(function (dataNews) {      // 如果用户输入将this.tableList数组过滤返回this.tableList的key值数组，然后在key的数组中将key进行转化成字符串变小写再转变的数组中是否有用户输入的key值，如果有返回this.tableList的key 作为this.tableData的值
+//             return Object.keys(dataNews).some(function (key) {
+//               return (
+//                 String(dataNews[key])
+//                   .toLowerCase()
+//                   .indexOf(search) > -1
+//               );
+//             });
+//           });
+//         }
+//         return this.List;
+//       }
+//     },
     mounted () {
       // 页面一加载完成就执行getList方法
       this.getList();
     },
 
     methods: {
-
-  //get weather
-      get_weather(){
-        this.$axios.get("http://wthrcdn.etouch.cn/weather_mini?city="+this.city)
-          .then(response=>{
-            this.ganmao=response.data.data.ganmao;
+      handleEdit(index, row) {
+        console.log(index, row);
+      },
+      //get weather
+      get_weather() {
+        this.$axios.get("http://wthrcdn.etouch.cn/weather_mini?city=" + this.city)
+          .then(response => {
+            this.ganmao = response.data.data.ganmao;
             // console.log(vm instanceof Array);
             console.log(response);
             console.log(response.data);
             console.log(response.data.data);
             console.log(response.data.data.ganmao);
 
-          }).catch(error=>{
+          }).catch(error => {
           console.log(error.response)
         });
       },
       //获取数据
-      getList(){
+      getList() {
         axios.get('http://www.liulongbin.top:3005/api/getprodlist',
-          {params:{searchvalue:this.searchVal}})
+          {params: {searchvalue: this.searchVal}})
           .then(res => {
-            if (res.data.status === 0) {
-              this.list = res.data.message;
-            }
+            // if (res.data.status === 0) {
+            //   this.list = res.data.message;
+            // }
+            let list = res.data.message;
+            list.forEach(element => {
+              element["show"] = false
+            });
+            this.list =list;
           })
           .catch(err => {
             console.error('获取数据失败' + err);
@@ -175,13 +210,13 @@
       handleSelectionChange(val) {
         console.log(val)
       },
-    // mounted() {
-    //   this.getlist()
-    // },
+//search
+      searchform(){
+        this.getList();
+      },
       //删除数据
       delData(id){
         //let id = row[index].id;
-        // row.splice(index, 1);
         axios.get(`http://www.liulongbin.top:3005/api/delproduct/${id}`)
         this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -302,7 +337,12 @@
   }
   .addbutton{
     margin-top: 20px;
-    /*padding-right: 40px;*/
     width:10%;
   }
+  .searchbutton{
+    margin-top: 20px;
+    width:10%;
+    margin-left: 170px;
+  }
+
 </style>

@@ -6,7 +6,7 @@
       <input type="button" value="添加" @click="addData">
     </div>
     <div class="add">
-      品牌名称：<input type="text" placeholder="请输入搜索条件" @keyDown:enter="searchData">
+      品牌名称：<input type="text" placeholder="请输入搜索条件" @keyup.enter="searchData">
     </div>
     <div>
       <table class="tb">
@@ -26,7 +26,7 @@
           </td>
           <td>{{item.id}}</td>
           <td>{{item.name}}</td>
-          <td>{{item.ctime | fmtTime('-')}}</td>
+          <td>{{item.ctime}}</td>
           <td>
             <button @click="delData(item.id)">删除</button>
           </td>
@@ -37,25 +37,6 @@
         </tr>
         <!-- 动态生成内容tr -->
       </table>
-
-      <!--<el-table-->
-        <!--:data="list"-->
-        <!--style="width: 100%">-->
-        <!--<el-table-column-->
-          <!--prop="date"-->
-          <!--label="日期"-->
-          <!--width="180">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-          <!--prop="name"-->
-          <!--label="姓名"-->
-          <!--width="180">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-          <!--prop="address"-->
-          <!--label="地址">-->
-        <!--</el-table-column>-->
-      <!--</el-table>-->
       <button @click="delDataall()">批量选择</button>
     </div>
   </div>
@@ -184,7 +165,7 @@
         //搜索商品名称
         searchData(){
           this.getList();
-        }
+  }
       }
     }
 </script>
