@@ -23,13 +23,14 @@
             placeholder="查询"
             prefix-icon="el-icon-search"
             v-model="search"
+            @change="searchfun(search)"
             >
           </el-input>
         </el-col>
       </el-row>
       <el-table
       ref="multipleTable"
-      :data="list.slice((currpage - 1) * pagesize, currpage * pagesize)&& list.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase())) "
+      :data="list.slice((currpage - 1) * pagesize, currpage * pagesize)  "
       tooltip-effect="dark"
       style="width: 100%"
       @selection-change="handleSelectionChange">
@@ -166,6 +167,13 @@
     },
 
     methods: {
+      searchfun(search){
+        alert('111');
+      //this.list.filter(data => !this.search || data.name.toLowerCase().includes(this.search.toLowerCase()))
+        this.list = this.list.filter(function(x){
+          return x.name.toLowerCase().includes(search.toLowerCase());
+        })
+      },
       handleEdit(index, row) {
         console.log(index, row);
       },
