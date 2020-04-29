@@ -22,14 +22,14 @@
           <el-input
             placeholder="查询"
             prefix-icon="el-icon-search"
-            @change="searchform()"
+            v-model="search"
             >
           </el-input>
         </el-col>
       </el-row>
       <el-table
       ref="multipleTable"
-      :data="list.slice((currpage - 1) * pagesize, currpage * pagesize)"
+      :data="list.slice((currpage - 1) * pagesize, currpage * pagesize)&& list.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase())) "
       tooltip-effect="dark"
       style="width: 100%"
       @selection-change="handleSelectionChange">
@@ -128,6 +128,8 @@
         id:"",
         pagesize: 10,
         currpage: 1,
+        search:'',
+        listdata:[],
       }
     },
     watch:{
