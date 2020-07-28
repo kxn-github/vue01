@@ -1,17 +1,24 @@
 <template>
   <!--顶部bar-->
-  <el-header >
-    <el-row>
-      <el-col :span="24">
-        <div class="grid-content bg-purple-dark grid-content bg-purple leftside">
-          <img class="logo" src="../assets/ibm-logo.jpg">
-          <a href="/" id="title" class="titletemp" >Benefits in the Cloud </a>
-        </div>
-     </el-col>
-    </el-row>
+<!--  <el-container>-->
+<!--    <el-header>-->
+<!--      <el-row>-->
+<!--        <el-col :span="4">-->
+<!--          <div class="grid-content bg-purple">-->
+<!--                    <img class="logo" src="../assets/ibm-logo.jpg">-->
+<!--          </div>-->
+<!--        </el-col>-->
+<!--        <el-col :span="8">-->
+<!--          <div class="grid-content bg-purple-light">-->
+<!--                <a href="/" id="title" class="titletemp" >Benefits in the Cloud </a>-->
+<!--          </div>-->
+<!--        </el-col>-->
+<!--        <el-col :span="12"><div class="grid-content bg-purple"></div></el-col>-->
 
+<!--      </el-row>-->
+<!--    </el-header>-->
 
-  </el-header>
+<!--  </el-container>-->
 
 
 </template>
@@ -24,18 +31,13 @@
     height: 4rem;
   }
   .logo{
-    top:10px;
-    width: 140px;
-    height: 65px;
-    position: relative;
+    margin-top:10px;
+    width: 65%;
   }
   .titletemp{
     color: #143c6a;
-    font-size: 56px;
+    font-size: 45px;
     text-decoration: none
-  }
-  .leftside{
-    padding-right: 600px;
   }
   .el-col {
     border-radius: 4px;

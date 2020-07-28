@@ -1,13 +1,12 @@
 <template>
   <el-container>
-    <el-header style="height: 80px">
-      <headertest></headertest>
-    </el-header>
-
+<!--    <el-header style="height: 80px">-->
+<!--      <headertest></headertest>-->
+<!--    </el-header>-->
     <el-main>
       <img class="backpic" src="~@/assets/background.png">
       <el-row>
-        <el-col :span="8"><div class="grid-content"></div></el-col>
+        <el-col :span="7"><div class="grid-content"></div></el-col>
         <el-col :span="8">
           品牌名称：<el-input
           placeholder="请输入内容"
@@ -15,10 +14,10 @@
           clearable>
         </el-input>
         </el-col>
-        <el-col :span="8" class="addbutton">
+        <el-col :span="7" class="addbutton">
             <el-button type="primary" @click="addData">添加</el-button>
         </el-col>
-        <el-col :span="3" class="searchbutton">
+        <el-col :span="2" class="searchbutton">
           <el-input
             placeholder="查询"
             prefix-icon="el-icon-search"
@@ -344,9 +343,9 @@
     width:10%;
   }
   .searchbutton{
-    margin-top: 20px;
+    margin-top: 19px;
     width:10%;
-    margin-left: 170px;
+    margin-left: 70px;
   }
 
 </style>
